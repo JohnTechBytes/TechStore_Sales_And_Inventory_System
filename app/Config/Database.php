@@ -1,5 +1,12 @@
 <?php
 
+/**
+* Description:  This Codeigniter Framework is created to build smart web applications
+* Author:       Glenn Azuelo
+* Date Created: April 14, 2025
+* Revised By:       
+*/
+
 namespace Config;
 
 use CodeIgniter\Database\Config;
@@ -24,32 +31,67 @@ class Database extends Config
      *
      * @var array<string, mixed>
      */
-    public array $default = [
-        'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
-        'DBDriver'     => 'MySQLi',
-        'DBPrefix'     => '',
-        'pConnect'     => false,
-        'DBDebug'      => true,
-        'charset'      => 'utf8mb4',
-        'DBCollat'     => 'utf8mb4_general_ci',
-        'swapPre'      => '',
-        'encrypt'      => false,
-        'compress'     => false,
-        'strictOn'     => false,
-        'failover'     => [],
-        'port'         => 3306,
-        'numberNative' => false,
-        'foundRows'    => false,
-        'dateFormat'   => [
-            'date'     => 'Y-m-d',
-            'datetime' => 'Y-m-d H:i:s',
-            'time'     => 'H:i:s',
-        ],
-    ];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Initialize the default configuration with dynamic values.
+        $this->default = [
+            'DSN'      => '',
+            'hostname' => getenv('database.default.hostname') ?: 'localhost',
+            'username' => getenv('database.default.username') ?: 'root',
+            'password' => getenv('database.default.password') ?: '',
+            'database' => 'techstore_db', 
+            'DBDriver' => getenv('database.default.DBDriver') ?: 'MySQLi',
+            'DBPrefix' => '',
+            'pConnect' => false,
+            'DBDebug'  => (ENVIRONMENT !== 'production'),
+            'cacheOn'  => false,
+            'cacheDir' => '',
+            'charset'  => 'utf8',
+            'DBCollat' => 'utf8_general_ci',
+            'swapPre'  => '',
+            'encrypt'  => false,
+            'compress' => false,
+            'strictOn' => false,
+            'failover' => [],
+            'port'     => (int) getenv('database.default.port') ?: 3306, // Explicitly casting to integer
+        ];
+
+        // If running in a testing environment, use the 'tests' connection group
+        if (ENVIRONMENT === 'testing') {
+            $this->defaultGroup = 'tests';
+        }
+    }
+
+
+    // public array $default = [
+    //     'DSN'          => '',
+    //     'hostname'     => 'localhost',
+    //     'username'     => 'phpmyadmin',
+    //     'password'     => '1234',
+    //     'database'     => 'newdb_brgy',
+    //     'DBDriver'     => 'MySQLi',
+    //     'DBPrefix'     => '',
+    //     'pConnect'     => false,
+    //     'DBDebug'      => true,
+    //     'charset'      => 'utf8mb4',
+    //     'DBCollat'     => 'utf8mb4_general_ci',
+    //     'swapPre'      => '',
+    //     'encrypt'      => false,
+    //     'compress'     => false,
+    //     'strictOn'     => false,
+    //     'failover'     => [],
+    //     'port'         => 3306,
+    //     'numberNative' => false,
+    //     'foundRows'    => false,
+    //     'dateFormat'   => [
+    //         'date'     => 'Y-m-d',
+    //         'datetime' => 'Y-m-d H:i:s',
+    //         'time'     => 'H:i:s',
+    //     ],
+    // ];
 
     //    /**
     //     * Sample database connection for SQLite3.
@@ -177,12 +219,11 @@ class Database extends Config
         'swapPre'     => '',
         'encrypt'     => false,
         'compress'    => false,
-        'strictOn'    => true,
+        'strictOn'    => false,
         'failover'    => [],
         'port'        => 3306,
         'foreignKeys' => true,
         'busyTimeout' => 1000,
-        'synchronous' => null,
         'dateFormat'  => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
@@ -190,15 +231,15 @@ class Database extends Config
         ],
     ];
 
-    public function __construct()
-    {
-        parent::__construct();
+    // public function __construct()
+    // {
+    //     parent::__construct();
 
-        // Ensure that we always set the database group to 'tests' if
-        // we are currently running an automated test suite, so that
-        // we don't overwrite live data on accident.
-        if (ENVIRONMENT === 'testing') {
-            $this->defaultGroup = 'tests';
-        }
-    }
+    //     // Ensure that we always set the database group to 'tests' if
+    //     // we are currently running an automated test suite, so that
+    //     // we don't overwrite live data on accident.
+    //     if (ENVIRONMENT === 'testing') {
+    //         $this->defaultGroup = 'tests';
+    //     }
+    // }
 }

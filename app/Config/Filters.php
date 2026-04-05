@@ -34,6 +34,9 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'inactivity' => \App\Filters\InactivityFilter::class,
+          'auth'          => \App\Filters\Auth::class,
+        'csp' => \App\Filters\CspFilter::class,
     ];
 
     /**
@@ -65,20 +68,19 @@ class Filters extends BaseFilters
      * List of filter aliases that are always
      * applied before and after every request.
      *
-     * @var array{
-     *     before: array<string, array{except: list<string>|string}>|list<string>,
-     *     after: array<string, array{except: list<string>|string}>|list<string>
-     * }
+     * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
      */
     public array $globals = [
         'before' => [
-            // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
+            'inactivity' => ['except' => ['login', 'login/*', 'auth/*']], // adjust paths as needed
+            'honeypot',
+            'csrf',
+            'invalidchars',
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
+            'csp',
+            'honeypot',
+            'secureheaders',
         ],
     ];
 
