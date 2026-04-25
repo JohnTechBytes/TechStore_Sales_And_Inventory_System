@@ -62,14 +62,13 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $styleSrc = ['self', "'unsafe-inline'"];
-
+  public $styleSrc = ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://code.ionicframework.com'];
     /**
      * Defines the origins from which images can be loaded.
      *
      * @var list<string>|string
      */
-    public $imageSrc = 'self';
+    public $imageSrc = ["'self'", 'data:', 'blob:', 'http://localhost:8080'];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -100,7 +99,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $fontSrc;
+    public $fontSrc  = ["'self'", 'https://fonts.gstatic.com', 'https://code.ionicframework.com'];
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.

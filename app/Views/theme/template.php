@@ -444,8 +444,6 @@ $(document).ready(function(){
   });
 </script>
 
-<script src="<?= base_url('js/user.js') ?>"></script>
-
 <script>
 $(document).ajaxComplete(function(){
   $('.dataTables_filter input').addClass('form-control form-control-sm').css('border-radius','30px');

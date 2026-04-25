@@ -57,6 +57,7 @@ $routes->get('/sales/receipt/(:num)', 'Sales::receipt/$1');
 $routes->get('/sales/history', 'Sales::history');
 $routes->get('/pos', 'Sales::pos');   // optional, but keep if you use /pos
 $routes->post('/sales/syncCart', 'Sales::syncCart');
+$routes->get('sales/searchProducts', 'Sales::searchProducts');
 
     
     // Reports (accessible by both admin and staff)

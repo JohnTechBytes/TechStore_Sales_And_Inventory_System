@@ -297,4 +297,36 @@ public function syncCart()
     }
     return $this->response->setJSON(['success' => true]);
 }
+public function searchProducts()
+{
+    $query = $this->request->getGet('q');
+    $db = \Config\Database::connect();
+    $builder = $db->table('products')->select('id, name, selling_price, image');
+    
+    // If a search term is provided, filter by name
+    if (!empty($query) && strlen(trim($query)) >= 1) {
+        $builder->like('name', $query);
+    }
+    
+    // Limit to avoid huge payload (adjust as needed)
+    $products = $builder->limit(50)->get()->getResultArray();
+    
+    // If no products, return empty array
+    if (empty($products)) {
+        return $this->response->setJSON([]);
+    }
+    
+    $data = [];
+    foreach ($products as $p) {
+        $imagePath = !empty($p['image']) ? 'uploads/products/' . $p['image'] : 'assets/img/no-image.png';
+        $data[] = [
+            'id'           => $p['id'],
+            'name'         => $p['name'],
+            'selling_price'=> (float)$p['selling_price'],
+            'image_url'    => base_url($imagePath)
+        ];
+    }
+    
+    return $this->response->setJSON($data);
+}
 }
